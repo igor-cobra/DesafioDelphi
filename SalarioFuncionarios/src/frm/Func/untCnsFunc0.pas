@@ -42,10 +42,11 @@ var
   FrmCnsFunc0: TFrmCnsFunc0;
 
 const
-  RG_NAO = 0;
-  RG_SIM = 1;
-  RG_SOMAR = 0;
-  RG_MEDIA = 1;
+  //Para facilitar qual botão foi informado no RadioGroup
+  RG_FILTRO_NAO = 0;
+  RG_FILTRO_SIM = 1;
+  RG_CALCULO_SOMAR = 0;
+  RG_CALCULO_MEDIA = 1;
 
 implementation
 
@@ -56,20 +57,20 @@ var
   Ids: TArray<Integer>;
   nValor: Real;
 begin
- if not ValidarListaFuncionario then
+  if not ValidarListaFuncionario then
     Exit;
-  if rgFiltrarFunc.ItemIndex = RG_NAO then begin
-    Ids := Funcionario.GetTodosIds;
+  if rgFiltrarFunc.ItemIndex = RG_FILTRO_NAO then begin
+    Ids := Funcionario.GetIds;
   end else begin
     if not ValidarIdsInformados then
       Exit;
     Ids := Funcionario.GetIds(fldListaFuncionario.Text);
   end;
 
-  if rgTipoCalculo.ItemIndex = RG_SOMAR then
-      nValor := Funcionario.GetSalarioTotal(Ids)
-    else
-      nValor := Funcionario.GetMediaSalario(Ids);
+  if rgTipoCalculo.ItemIndex = RG_CALCULO_SOMAR then
+    nValor := Funcionario.GetSalario(Ids, tpSoma)
+  else
+    nValor := Funcionario.GetSalario(Ids, tpMedia);
 
   fldResultado.Text := FormatFloat('#,###0.00', nValor);
 end;
@@ -89,46 +90,37 @@ end;
 
 procedure TFrmCnsFunc0.FormCreate(Sender: TObject);
 begin
-  FrmCnsFunc0.Caption := 'Funcionários';
-  Funcionario := TFuncionario.Create(cdsFuncionario);
+  FrmCnsFunc0.Caption := 'Funcionários'; //nome de exibição do form
+  Funcionario := TFuncionario.Create(cdsFuncionario); //Classe onde será gerado e manipulado os dados dos funcionários
 end;
 
 procedure TFrmCnsFunc0.rgFiltrarFuncClick(Sender: TObject);
 begin
-  fldListaFuncionario.Enabled := rgFiltrarFunc.ItemIndex = RG_SIM;
+  fldListaFuncionario.Enabled := rgFiltrarFunc.ItemIndex = RG_FILTRO_SIM; //O campo para filtrar os funcionários estará habilitado somente precisar filtrar
 end;
 
 function TFrmCnsFunc0.ValidarIdsInformados: Boolean;
 var
-  Ids: TArray<Integer>;
   sIds: TArray<string>;
   sLista: string;
   iCont: Integer;
   Id: Integer;
 begin
   Result := True;
-  if rgFiltrarFunc.ItemIndex = RG_SIM then begin
+  //Caso tenha de filtrar os Ids
+  if rgFiltrarFunc.ItemIndex = RG_FILTRO_SIM then begin
     if Trim(fldListaFuncionario.Text) = '' then begin
       ShowMessage('Deve ser informado pelo menos um funcionário.');
     end;
 
-
-    Ids := [];
     sLista := fldListaFuncionario.Text;
     sIds := sLista.Split([';']);
     for iCont := 0 to High(sIds) do begin
-      if not TryStrToInt(sIds[iCont], Id) then begin
-        ShowMessage('Um ou mais IDs informados são inválidos.');
+      if not Funcionario.ExisteId(sIds[iCont]) then begin
+        ShowMessage(Format('O ID %s não foi encontrado.', [sIds[iCont]]));
         Result := False;
         Exit;
       end;
-
-      if not Funcionario.ExisteId(Id) then begin
-        ShowMessage(Format('O ID %d não foi encontrado.', [Id]));
-        Result := False;
-        Exit;
-      end;
-      Ids := Ids + [Id];
     end;
   end;
 end;
@@ -138,6 +130,7 @@ var
   iCont: Integer;
 begin
   Result := True;
+  //Valida se os caracteres informados são os válidos
   for iCont := 1 to Length(fldListaFuncionario.Text) do begin
     if not CharInSet(fldListaFuncionario.Text[iCont], ['0'..'9', ';']) then begin
       ShowMessage('O campo de IDs possui caracteres inválidos.');

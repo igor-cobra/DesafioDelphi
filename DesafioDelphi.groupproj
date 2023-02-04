@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{9757FD22-E3A8-4244-90A6-BFB6DD1580BF}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="SalarioFuncionarios\SalarioFuncionarios.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="QryBuilder\GeradorSql.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SalarioFuncionarios">
+        <MSBuild Projects="SalarioFuncionarios\SalarioFuncionarios.dproj"/>
+    </Target>
+    <Target Name="SalarioFuncionarios:Clean">
+        <MSBuild Projects="SalarioFuncionarios\SalarioFuncionarios.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SalarioFuncionarios:Make">
+        <MSBuild Projects="SalarioFuncionarios\SalarioFuncionarios.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GeradorSql">
+        <MSBuild Projects="QryBuilder\GeradorSql.dproj"/>
+    </Target>
+    <Target Name="GeradorSql:Clean">
+        <MSBuild Projects="QryBuilder\GeradorSql.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GeradorSql:Make">
+        <MSBuild Projects="QryBuilder\GeradorSql.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SalarioFuncionarios;GeradorSql"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SalarioFuncionarios:Clean;GeradorSql:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SalarioFuncionarios:Make;GeradorSql:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
