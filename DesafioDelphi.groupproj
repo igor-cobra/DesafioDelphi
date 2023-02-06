@@ -9,6 +9,9 @@
         <Projects Include="QryBuilder\GeradorSql.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="GeradorFormulario\GeradorCadastro.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="GeradorSql:Make">
         <MSBuild Projects="QryBuilder\GeradorSql.dproj" Targets="Make"/>
     </Target>
+    <Target Name="GeradorCadastro">
+        <MSBuild Projects="GeradorFormulario\GeradorCadastro.dproj"/>
+    </Target>
+    <Target Name="GeradorCadastro:Clean">
+        <MSBuild Projects="GeradorFormulario\GeradorCadastro.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GeradorCadastro:Make">
+        <MSBuild Projects="GeradorFormulario\GeradorCadastro.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="SalarioFuncionarios;GeradorSql"/>
+        <CallTarget Targets="SalarioFuncionarios;GeradorSql;GeradorCadastro"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="SalarioFuncionarios:Clean;GeradorSql:Clean"/>
+        <CallTarget Targets="SalarioFuncionarios:Clean;GeradorSql:Clean;GeradorCadastro:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="SalarioFuncionarios:Make;GeradorSql:Make"/>
+        <CallTarget Targets="SalarioFuncionarios:Make;GeradorSql:Make;GeradorCadastro:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
