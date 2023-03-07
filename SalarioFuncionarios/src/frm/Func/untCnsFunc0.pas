@@ -111,6 +111,8 @@ begin
   if rgFiltrarFunc.ItemIndex = RG_FILTRO_SIM then begin
     if Trim(fldListaFuncionario.Text) = '' then begin
       ShowMessage('Deve ser informado pelo menos um funcionário.');
+      Result := False;
+      Exit;
     end;
 
     sLista := fldListaFuncionario.Text;

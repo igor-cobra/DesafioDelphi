@@ -82,8 +82,7 @@ begin
       FCds.First;
       FCds.EnableControls;
     end;
-  end
-  else begin
+  end else begin
     //Seleciona os ids informados
     Ids := sIds.Split([';']);
     SetLength(iResult, Length(Ids));
@@ -91,6 +90,8 @@ begin
     for iCont := 0 to High(Ids) do
       iResult[iCont] := StrToInt(Ids[iCont]);
   end;
+
+  Result := iResult;
 end;
 
 function TFuncionario.GetSalario(Ids: TArray<Integer>; tpCalculo: TTipoCalculo): Real;

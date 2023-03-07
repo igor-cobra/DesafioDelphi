@@ -17,7 +17,7 @@ type
     function GerarCondicoes: string; //gera uma string que representa uma lista de condições separadas por "AND" a partir das condições armazenadas em FCondicoes.
     function GerarGroupBy: string; //gera uma string que representa a cláusula "GROUP BY" a partir dos campos armazenados em FCampos
     function PossuiFuncoesAgregadas: Boolean; //verifica se existe pelo menos uma função agregada entre os campos armazenados em FCampos
-    function PrimeiroCampoNaoAgregado: string; //retorna o primeiro campo que não é uma função agregada
+    function CamposNaoAgregados: string; //retorna o primeiro campo que não é uma função agregada
   public
     constructor Create(sTabela: string);
     destructor Destroy; override;
@@ -71,13 +71,13 @@ end;
 
 function TSQLBuilder.GerarGroupBy: string;
 var
-  PrimeiroCampo: string;
+  sCampos: string;
 begin
   Result := '';
   if PossuiFuncoesAgregadas then begin
-    PrimeiroCampo := PrimeiroCampoNaoAgregado;
-    if PrimeiroCampo <> '' then
-      Result := ' GROUP BY ' + PrimeiroCampo;
+    sCampos := CamposNaoAgregados;
+    if sCampos <> '' then
+      Result := ' GROUP BY ' + sCampos;
   end;
 end;
 
@@ -140,16 +140,17 @@ begin
     end;
 end;
 
-function TSQLBuilder.PrimeiroCampoNaoAgregado: string;
+function TSQLBuilder.CamposNaoAgregados: string;
 var
   iCont: Integer;
 begin
   Result := '';
-  for iCont := 0 to FCampos.Count - 1 do
+  for iCont := 0 to FCampos.Count - 1 do begin
     if AnsiPos('(', FCampos[iCont]) = 0 then begin
-      Result := FCampos[iCont];
-      Break;
+      Result := Result + FCampos[iCont] + ', ';
     end;
+  end;
+  Result := Copy(Result, 1, Length(Result) - 2);
 end;
 
 end.

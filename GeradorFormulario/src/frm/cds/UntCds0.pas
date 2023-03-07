@@ -189,8 +189,6 @@ begin
 end;
 
 function TfrmCdsCad0.ValidaDados: Boolean;
-var
-  Componente: TComponent;
 begin
   Result := True;
 
@@ -212,14 +210,13 @@ begin
     Exit;
   end;
 
-  Componente := FindComponent(fldTIPOCOMPONENTE.Text);
-  if Componente = nil then begin
+  if (UpperCase(fldTIPOCOMPONENTE.Text) <> 'TEDIT') and (UpperCase(fldTIPOCOMPONENTE.Text) <> 'RADIOGROUP') and (UpperCase(fldTIPOCOMPONENTE.Text) <> 'COMBOBOX') then begin
     ShowMessage('O componente inserido não existe.');
     Result := False;
     Exit;
   end;
 
-  if ComponentePossuiItems(Componente) and (fldITENS.Text = '') then begin
+  if (UpperCase(fldTIPOCOMPONENTE.Text) <> 'TEDIT') and (fldITENS.Text = '') then begin
     ShowMessage('O componente possui a propriedade items, portanto algum deve ser informado');
     Result := False;
     Exit;

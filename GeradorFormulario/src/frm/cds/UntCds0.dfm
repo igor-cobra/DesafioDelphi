@@ -90,7 +90,7 @@ object frmCdsCad0: TfrmCdsCad0
         Width = 381
         Height = 21
         Enabled = False
-        TabOrder = 2
+        TabOrder = 3
       end
       object fldLARGURACOMPONENTE: TEdit
         Left = 382
@@ -100,7 +100,7 @@ object frmCdsCad0: TfrmCdsCad0
         Alignment = taRightJustify
         Enabled = False
         NumbersOnly = True
-        TabOrder = 5
+        TabOrder = 2
       end
       object fldALTURACOMPONENTE: TEdit
         Left = 135
@@ -118,7 +118,7 @@ object frmCdsCad0: TfrmCdsCad0
         Width = 381
         Height = 21
         Enabled = False
-        TabOrder = 3
+        TabOrder = 4
       end
       object dbnDadosComp: TDBNavigator
         Left = 144
@@ -127,7 +127,7 @@ object frmCdsCad0: TfrmCdsCad0
         Height = 25
         DataSource = dsDadosComp
         VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbPost, nbCancel, nbRefresh]
-        TabOrder = 4
+        TabOrder = 5
         OnClick = dbnDadosCompClick
       end
     end

@@ -92,7 +92,7 @@ var
 begin
   bResult := Trim(fldTabela.Text) <> '';
 
-  if Operacao in [soInsert, soUpdate, soDelete] then
+  if Operacao in [soInsert, soUpdate] then
     bResult := bResult and (mmoCampos.Lines.Count > 0);
 
   if Operacao in [soUpdate, soDelete] then
